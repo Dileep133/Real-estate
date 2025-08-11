@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Realty - Premium Real Estate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            background: rgba(44, 62, 80, 0.95);
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+        }
+
+        .admin-btn {
+            background: #e74c3c;
+        }
+
+        .admin-btn:hover {
+            background: #c0392b;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn.primary {
+            background: #3498db;
+            border-color: #3498db;
+        }
+
+        .cta-btn.primary:hover {
+            background: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .cta-btn.admin {
+            background: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .cta-btn.admin:hover {
+            background: #c0392b;
+            border-color: #c0392b;
+        }
+
+        .features {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #ecf0f1;
+        }
+
+        .feature-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .credentials {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .credentials h2 {
+            margin-bottom: 2rem;
+            color: #ecf0f1;
+        }
+
+        .cred-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .cred-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .cred-card h3 {
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .cred-card p {
+            margin: 0.5rem 0;
+            font-family: monospace;
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">🏠 Elite Realty</div>
+            <div class="nav-links">
+                <a href="user-login.html" class="nav-btn">User Login</a>
+                <a href="admin-login.html" class="nav-btn admin-btn">Admin Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to Elite Realty</h1>
+            <p>Your premier destination for luxury real estate. Experience the finest properties with our advanced management system featuring user authentication, property management, and real-time updates.</p>
+            
+            <div class="cta-buttons">
+                <a href="user-login.html" class="cta-btn primary">👤 User Login</a>
+                <a href="user-register.html" class="cta-btn">📝 Create Account</a>
+                <a href="admin-login.html" class="cta-btn admin">🔐 Admin Panel</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h3>Premium Properties</h3>
+                <p>Browse through our exclusive collection of luxury homes, apartments, and commercial properties in prime locations.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure Access</h3>
+                <p>Advanced authentication system with separate user and admin portals ensuring data security and privacy.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Real-Time Updates</h3>
+                <p>Admin-added properties appear instantly on the main website with live notifications and dynamic content updates.</p>
+            </div>
+        </section>
+
+        <section class="credentials">
+            <h2>🎯 Demo Access</h2>
+            <div class="cred-grid">
+                <div class="cred-card">
+                    <h3>👤 User Account</h3>
+                    <p><strong>Email:</strong> user@example.com</p>
+                    <p><strong>Password:</strong> user123</p>
+                </div>
+                
+                <div class="cred-card">
+                    <h3>🔐 Admin Portal</h3>
+                    <p>Contact administrator for access credentials</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html> 

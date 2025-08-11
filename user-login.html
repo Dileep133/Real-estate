@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login - Elite Realty</title>
+    <!-- Google Fonts for beautiful typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .bg-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .bg-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+        }
+
+        /* Login Container */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header */
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Form Section */
+        .login-form {
+            padding: 40px 30px;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 45px 15px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fafbfc;
+            transition: all 0.3s ease;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* Disable autofill styling */
+        .form-group input:-webkit-autofill,
+        .form-group input:-webkit-autofill:hover,
+        .form-group input:-webkit-autofill:focus,
+        .form-group input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #fafbfc inset !important;
+            -webkit-text-fill-color: #2c3e50 !important;
+        }
+
+        /* Disable password reveal button */
+        .form-group input[type="password"]::-ms-reveal {
+            display: none;
+        }
+
+        /* Disable clear button */
+        .form-group input::-ms-clear {
+            display: none;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .form-group input:focus + .input-icon {
+            color: #667eea;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Demo Credentials */
+        .demo-credentials {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            border: 1px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .demo-credentials h4 {
+            color: #155724;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .demo-credentials p {
+            color: #155724;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .demo-credentials strong {
+            color: #0f5132;
+        }
+
+        /* Quick Login Button */
+        /* Account Options */
+        .account-options {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        .account-help {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .create-account-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+        }
+
+        .create-account-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+            background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+        }
+
+        .create-account-btn:active {
+            transform: translateY(0) scale(1.02);
+        }
+
+        /* Links */
+        .auth-links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .auth-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .auth-links a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-message.success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+
+        .status-message.info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Loading Spinner */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-left: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .login-container {
+                max-width: 100%;
+            }
+
+            .login-header {
+                padding: 30px 20px 25px;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.7rem;
+            }
+
+            .login-form {
+                padding: 30px 20px;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 25px 15px 20px;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .login-form {
+                padding: 25px 15px;
+            }
+
+            .account-options {
+                margin: 15px 0;
+                padding: 15px;
+            }
+
+            .create-account-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+
+            .auth-links a {
+                display: block;
+                margin: 8px 0;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <!-- Header -->
+        <div class="login-header">
+            <div class="logo">🏠</div>
+            <h1>Elite Realty</h1>
+            <p>Your Gateway to Premium Properties</p>
+        </div>
+
+        <!-- Form -->
+        <div class="login-form">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            <!-- Status Message -->
+            <div id="statusMessage" class="status-message"></div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="return handleUserLogin(event)" 
+                  autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="userEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="userEmail" name="email" required 
+                               placeholder="Enter your email address"
+                               autocomplete="off"
+                               autocapitalize="off"
+                               autocorrect="off"
+                               spellcheck="false">
+                        <span class="input-icon">📧</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="userPassword" name="password" required 
+                               placeholder="Enter your password"
+                               autocomplete="off"
+                               autocapitalize="off"
+                               autocorrect="off"
+                               spellcheck="false">
+                        <span class="input-icon">🔒</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Sign In to Your Account
+                </button>
+            </form>
+
+            <!-- Create Account Section -->
+            <div class="account-options">
+                <p class="account-help">Don't have an account?</p>
+                <button onclick="createNewAccount()" class="create-account-btn">
+                    ✨ Create New Account
+                </button>
+            </div>
+
+            <!-- Auth Links -->
+            <div class="auth-links">
+                <a href="admin-login.html">🔐 Admin Portal</a>
+                <a href="user-register.html">📝 Register</a>
+                <a href="home.html">🏠 Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== USER LOGIN SYSTEM ====================
+        
+        // Initialize user database
+        function initUserDB() {
+            const users = {
+                'user@example.com': {
+                    email: 'user@example.com',
+                    password: 'user123',
+                    name: 'John Doe',
+                    role: 'user',
+                    avatar: '👤'
+                },
+                'demo@user.com': {
+                    email: 'demo@user.com',
+                    password: 'demo123',
+                    name: 'Demo User',
+                    role: 'user',
+                    avatar: '🧑‍💼'
+                }
+            };
+            
+            if (!localStorage.getItem('elite_users')) {
+                localStorage.setItem('elite_users', JSON.stringify(users));
+                // Database initialized
+            }
+        }
+
+        // Show status message
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type} show`;
+            
+            // Status message logged
+            
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 5000);
+        }
+
+        // Show/hide loading
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        // Clear form function
+        function clearForm() {
+            document.getElementById('loginForm').reset();
+            showStatus('Form cleared. Please enter your credentials.', 'info');
+        }
+
+        // Create new account function
+        function createNewAccount() {
+            showStatus('Redirecting to registration page...', 'info');
+            setTimeout(() => {
+                window.location.href = 'user-register.html';
+            }, 1500);
+        }
+
+        // Handle user login
+        function handleUserLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            
+            if (!email || !password) {
+                showStatus('Please fill in all fields.', 'error');
+                return false;
+            }
+            
+            // Login attempt processing
+            showLoading();
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('elite_users') || '{}');
+                const user = users[email];
+                
+                if (!user) {
+                    hideLoading();
+                    showStatus('Account not found. Please check your email address.', 'error');
+                    return;
+                }
+                
+                if (user.password !== password) {
+                    hideLoading();
+                    showStatus('Incorrect password. Please try again.', 'error');
+                    return;
+                }
+                
+                // Login successful
+                user.lastLogin = new Date().toISOString();
+                localStorage.setItem('elite_current_user', JSON.stringify(user));
+                localStorage.setItem('elite_session', JSON.stringify({
+                    userId: user.email,
+                    role: user.role,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                hideLoading();
+                showStatus(`Welcome back, ${user.name}! Redirecting to properties...`, 'success');
+                
+                // Add success animation
+                document.querySelector('.login-container').style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    document.querySelector('.login-container').style.transform = '';
+                }, 300);
+                
+                // Redirect to main site
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            }, 1500);
+            
+            return false;
+        }
+
+        // Form enhancement effects
+        // Disable autofill and suggestions
+        function disableAutofillFeatures() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                // Disable various autofill features
+                input.setAttribute('autocomplete', 'new-password');
+                input.setAttribute('data-lpignore', 'true');
+                input.setAttribute('data-form-type', 'other');
+                
+                // Clear any pre-filled values
+                setTimeout(() => {
+                    if (input.value && !input.dataset.userEntered) {
+                        input.value = '';
+                    }
+                }, 100);
+                
+                // Track user input
+                input.addEventListener('input', function() {
+                    this.dataset.userEntered = 'true';
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // System initialization complete
+            
+            // Initialize database
+            initUserDB();
+            
+            // Disable autofill features
+            disableAutofillFeatures();
+            
+            // Check if already logged in
+            const currentUser = JSON.parse(localStorage.getItem('elite_current_user') || 'null');
+            if (currentUser && currentUser.role === 'user') {
+                showStatus(`Welcome back, ${currentUser.name}! You're already logged in.`, 'info');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                return;
+            }
+            
+            // Add input focus effects
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-1px)';
+                    this.parentElement.style.transition = 'transform 0.3s ease';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = '';
+                });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Escape to clear form
+                if (e.key === 'Escape') {
+                    clearForm();
+                }
+            });
+            
+            showStatus('Ready to sign in. Please enter your registered credentials.', 'info');
+        });
+    </script>
+</body>
+</html> 

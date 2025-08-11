@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Realty - Premium Real Estate</title>
+    <!-- Google Fonts for beautiful typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js?v=20250811094512"></script>
+    <script>
+        // Check authentication immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏠 Main website loading - checking authentication...');
+            
+            const authStatus = checkAuthStatus();
+            
+            if (!authStatus.isAuthenticated) {
+                alert('Please login to access Elite Realty website.');
+                window.location.href = 'user-login.html';
+                return;
+            }
+            
+            console.log('✅ User authenticated:', authStatus.user.name);
+            
+            // Update navigation with user info
+            updateNavigation(authStatus);
+            
+            // Load properties dynamically
+            loadProperties();
+        });
+        
+        function updateNavigation(authStatus) {
+            const authMenu = document.getElementById('auth-menu');
+            
+            if (authStatus.user.role === 'admin') {
+                authMenu.innerHTML = `
+                    <span class="user-name">Welcome, ${authStatus.user.name}</span>
+                    <a href="admin.html" class="admin-btn">Admin Panel</a>
+                    <button onclick="logout()" class="logout-btn">Logout</button>
+                `;
+            } else {
+                authMenu.innerHTML = `
+                    <span class="user-name">Welcome, ${authStatus.user.name}</span>
+                    <button onclick="logout()" class="logout-btn">Logout</button>
+                `;
+            }
+        }
+        
+        function loadProperties() {
+            console.log('🏠 Loading properties for main site...');
+            const properties = db.getAllProperties();
+            console.log('📊 Found properties:', properties.length);
+            displayProperties(properties);
+        }
+        
+        function displayProperties(properties) {
+            const propertiesGrid = document.querySelector('.properties-grid');
+            propertiesGrid.innerHTML = '';
+            
+            properties.forEach(property => {
+                const propertyCard = createPropertyCard(property);
+                propertiesGrid.appendChild(propertyCard);
+            });
+        }
+        
+        function createPropertyCard(property) {
+            const card = document.createElement('div');
+            card.className = 'property-card';
+            
+            card.innerHTML = `
+                <div class="property-image" style="background-image: url('${property.image}');">
+                    <div class="property-price">${formatPrice(property.price)}</div>
+                    <div class="view-3d-badge">🏠 3D Available</div>
+                </div>
+                <div class="property-info">
+                    <h3 class="property-title">${property.title}</h3>
+                    <p class="property-location">📍 ${property.location}</p>
+                    <div class="property-features">
+                        <span class="feature">🛏️ ${property.beds} Beds</span>
+                        <span class="feature">🚿 ${property.baths} Baths</span>
+                        <span class="feature">📐 ${property.sqft} sq ft</span>
+                    </div>
+                    <div class="property-actions-bottom">
+                        <button class="view-details-btn" onclick="viewProperty('${property.id}')">View Details</button>
+                        <button class="view-3d-btn" onclick="show3DTour('${property.id}')">🏠 3D View</button>
+                        <button class="contact-btn" onclick="contactAgent('${property.id}')">Contact Agent</button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        function formatPrice(price) {
+            if (price >= 1000000) {
+                return `$${(price / 1000000).toFixed(1)}M`;
+            } else if (price >= 1000) {
+                return `$${(price / 1000).toFixed(0)}K`;
+            } else {
+                return `$${price.toLocaleString()}`;
+            }
+        }
+        
+        function viewProperty(propertyId) {
+            const properties = db.getAllProperties() || [];
+            const property = properties.find(p => p && p.id === propertyId);
+            
+            if (!property) {
+                showNotification('Property not found', 'error');
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'property-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 15px; max-width: 800px; width: 90%; max-height: 90%; overflow-y: auto; position: relative; padding: 0;">
+                    <button onclick="this.closest('.property-modal').remove()" style="position: absolute; top: 1rem; right: 1rem; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; z-index: 10001;">×</button>
+                    
+                    <img src="${property.image}" alt="${property.title}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 15px 15px 0 0;">
+                    
+                    <div style="padding: 2rem;">
+                        <h2 style="color: #2c3e50; margin-bottom: 1rem;">${property.title}</h2>
+                        <p style="color: #e74c3c; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">${formatPrice(property.price)}</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+                            <div><strong>Type:</strong> ${property.type}</div>
+                            <div><strong>Location:</strong> ${property.location}</div>
+                            <div><strong>Bedrooms:</strong> ${property.beds}</div>
+                            <div><strong>Bathrooms:</strong> ${property.baths}</div>
+                            <div><strong>Square Feet:</strong> ${property.sqft}</div>
+                        </div>
+                        
+                        <div style="margin: 1rem 0;">
+                            <h3 style="color: #2c3e50;">Description</h3>
+                            <p style="line-height: 1.6;">${property.description}</p>
+                        </div>
+                        
+                        <div style="margin: 1rem 0; padding: 1rem; background: #e8f4f8; border-radius: 10px;">
+                            <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Contact Agent</h3>
+                            <p><strong>Agent:</strong> ${property.agent}</p>
+                            <p><strong>Phone:</strong> ${property.agentPhone}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function show3DTour(propertyId) {
+            showNotification('🏠 3D Tour feature coming soon! Contact the agent for a virtual tour.', 'info');
+        }
+        
+        function contactAgent(propertyId) {
+            const properties = db.getAllProperties() || [];
+            const property = properties.find(p => p && p.id === propertyId);
+            
+            if (property) {
+                showNotification(`Contact ${property.agent} at ${property.agentPhone} for "${property.title}"`, 'info');
+            } else {
+                showNotification('Property information not available', 'error');
+            }
+        }
+        
+        // Listen for real-time updates from admin panel
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'elite_properties' || e.key === 'website_update_trigger' || 
+                e.key === 'flexible_properties' || e.key === 'simple_properties' || e.key === 'update_trigger') {
+                console.log('🔄 Properties updated, refreshing...');
+                loadProperties();
+                showNotification('🏠 Properties updated by admin!', 'success');
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Elite Realty</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li id="auth-menu">
+                        <!-- Dynamically populated -->
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Find Your Dream Home</h1>
+            <p>Discover premium properties in the most desirable locations</p>
+            <a href="#properties" class="cta-button">Explore Properties</a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <form class="search-form" onsubmit="searchProperties(event)">
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" placeholder="Enter city or address">
+                </div>
+                <div class="form-group">
+                    <label for="property-type">Property Type</label>
+                    <select id="property-type">
+                        <option value="">All Types</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                        <option value="villa">Villa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price-range">Price Range</label>
+                    <select id="price-range">
+                        <option value="">Any Price</option>
+                        <option value="0-200000">Under $200K</option>
+                        <option value="200000-500000">$200K - $500K</option>
+                        <option value="500000-1000000">$500K - $1M</option>
+                        <option value="1000000+">$1M+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bedrooms">Bedrooms</label>
+                    <select id="bedrooms">
+                        <option value="">Any</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search Properties</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
+    <section class="properties-section" id="properties">
+        <h2 class="section-title">Featured Properties</h2>
+        <div class="properties-grid">
+            <!-- Properties will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="services">
+        <div class="services-container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🏠</div>
+                    <h3>Property Sales</h3>
+                    <p>Expert guidance through the entire buying and selling process with market-leading expertise.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔑</div>
+                    <h3>Property Management</h3>
+                    <p>Comprehensive property management services to maximize your investment returns.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💰</div>
+                    <h3>Investment Consulting</h3>
+                    <p>Strategic real estate investment advice to help you build wealth through property.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Elite Realty</h3>
+                    <p>Your trusted partner in finding the perfect property. We've been serving clients for over 20 years with dedication and expertise.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#home">Home</a>
+                    <a href="#properties">Properties</a>
+                    <a href="#services">Services</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📧 info@eliterealty.com</p>
+                    <p>📞 (+1) 555-0123</p>
+                    <p>📍 123 Real Estate Ave, City, State</p>
+                    <p>🕒 Mon-Fri: 9AM-6PM, Sat-Sun: 10AM-4PM</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Elite Realty. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function searchProperties(event) {
+            event.preventDefault();
+            
+            const location = document.getElementById('location').value.toLowerCase();
+            const type = document.getElementById('property-type').value;
+            const priceRange = document.getElementById('price-range').value;
+            const bedrooms = document.getElementById('bedrooms').value;
+            
+            let properties = db.getAllProperties();
+            
+            // Filter by location
+            if (location) {
+                properties = properties.filter(p => 
+                    p.location.toLowerCase().includes(location) || 
+                    p.title.toLowerCase().includes(location)
+                );
+            }
+            
+            // Filter by type
+            if (type) {
+                properties = properties.filter(p => p.type === type);
+            }
+            
+            // Filter by price range
+            if (priceRange) {
+                if (priceRange === '1000000+') {
+                    properties = properties.filter(p => p.price >= 1000000);
+                } else {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    properties = properties.filter(p => p.price >= min && p.price <= max);
+                }
+            }
+            
+            // Filter by bedrooms
+            if (bedrooms) {
+                properties = properties.filter(p => p.beds >= parseInt(bedrooms));
+            }
+            
+            displayProperties(properties);
+            showNotification(`Found ${properties.length} properties matching your criteria`, 'info');
+        }
+    </script>
+</body>
+</html> 

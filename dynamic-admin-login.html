@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Admin Login - Elite Realty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #232526, #414345, #1a1a1a, #2c3e50);
+            background-size: 400% 400%;
+            animation: darkGradientShift 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes darkGradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Matrix-style background effect */
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: #e74c3c;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            animation: matrixFall linear infinite;
+        }
+
+        @keyframes matrixFall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Security Scanner Effect */
+        .security-scanner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        /* Main Container */
+        .admin-container {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            border: 2px solid #e74c3c;
+            border-radius: 20px;
+            box-shadow: 
+                0 25px 50px rgba(231, 76, 60, 0.3),
+                inset 0 0 20px rgba(231, 76, 60, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 2rem;
+            overflow: hidden;
+            position: relative;
+            animation: adminEntrance 1.5s ease-out;
+        }
+
+        @keyframes adminEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) rotateX(90deg);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05) rotateX(45deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+
+        /* Header Section */
+        .admin-header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: sweep 4s infinite;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .admin-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+            filter: drop-shadow(0 0 10px rgba(231, 76, 60, 0.8));
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(231, 76, 60, 0.8);
+            position: relative;
+            z-index: 2;
+        }
+
+        .admin-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .security-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            margin-top: 1rem;
+            display: inline-block;
+            font-size: 0.9rem;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.5; }
+        }
+
+        /* Form Section */
+        .admin-form {
+            padding: 2.5rem;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .security-warning {
+            background: linear-gradient(135deg, #2c1810, #3d1a1a);
+            border: 1px solid #e74c3c;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #e74c3c;
+            font-weight: bold;
+            animation: warningPulse 3s infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(231, 76, 60, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.8); }
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: #bdc3c7;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0 0.5rem;
+            z-index: 1;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #34495e;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 
+                0 0 20px rgba(231, 76, 60, 0.4),
+                inset 0 0 10px rgba(231, 76, 60, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: 0;
+            font-size: 0.8rem;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Button Styles */
+        .admin-btn {
+            width: 100%;
+            padding: 1.3rem;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .admin-btn:hover::before {
+            left: 100%;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 30px rgba(231, 76, 60, 0.5),
+                0 0 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .admin-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-message.success {
+            background: linear-gradient(135deg, #1e3a16, #2d5a27);
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .status-message.error {
+            background: linear-gradient(135deg, #3d1a1a, #2c1010);
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .status-message.info {
+            background: linear-gradient(135deg, #1a2332, #2c3e50);
+            color: #3498db;
+            border-color: #3498db;
+        }
+
+        /* Demo Info */
+        .demo-info {
+            background: linear-gradient(135deg, #2c1810, #3d2817);
+            border: 1px solid #f39c12;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            text-align: center;
+            color: #f39c12;
+        }
+
+        .demo-info h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-info p {
+            margin: 0.3rem 0;
+            opacity: 0.9;
+        }
+
+        /* Links */
+        .links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #34495e;
+        }
+
+        .links a {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e74c3c;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .links a:hover {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid #34495e;
+            border-left: 6px solid #e74c3c;
+            border-radius: 50%;
+            animation: adminSpin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes adminSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .access-granted {
+            font-size: 1.2rem;
+            color: #27ae60;
+            animation: typewriter 2s steps(20) infinite;
+        }
+
+        @keyframes typewriter {
+            0%, 50% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-container {
+                margin: 1rem;
+                max-width: 100%;
+            }
+
+            .admin-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+
+            .admin-icon {
+                font-size: 3rem;
+            }
+
+            .admin-form {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .links a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+
+        /* Quick Access Button */
+        .quick-admin {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .quick-admin:hover {
+            transform: scale(1.2);
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background Effect -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- Security Scanner -->
+    <div class="security-scanner"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="access-granted">🔐 VERIFYING ADMIN CREDENTIALS...</div>
+        </div>
+    </div>
+
+    <!-- Main Admin Container -->
+    <div class="admin-container">
+        <!-- Header Section -->
+        <div class="admin-header">
+            <div class="admin-icon">🔐</div>
+            <h1>ADMIN PORTAL</h1>
+            <p>Elite Realty Security Access</p>
+            <div class="security-badge">🛡️ RESTRICTED ACCESS</div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="admin-form">
+            <!-- Status Message -->
+            <div id="statusMessage" class="status-message"></div>
+
+            <!-- Security Warning -->
+            <div class="security-warning">
+                ⚠️ AUTHORIZED PERSONNEL ONLY<br>
+                All access attempts are logged and monitored
+            </div>
+
+            <!-- Login Form -->
+            <form id="adminForm" onsubmit="return handleAdminLogin(event)">
+                <div class="form-group">
+                    <input type="text" id="adminUsername" placeholder=" " required>
+                    <label for="adminUsername">👤 Administrator ID</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="adminPassword" placeholder=" " required>
+                    <label for="adminPassword">🔒 Security Key</label>
+                </div>
+
+                <button type="submit" class="admin-btn">
+                    🚀 ACCESS CONTROL PANEL
+                </button>
+            </form>
+
+            <!-- Demo Information -->
+            <div class="demo-info">
+                <h4>🔑 System Access Credentials</h4>
+                <p><strong>Admin ID:</strong> admin</p>
+                <p><strong>Security Key:</strong> 123</p>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="links">
+                <a href="dynamic-user-login.html">👤 User Portal</a>
+                <a href="FLEXIBLE-SOLUTION.html">🏠 Main System</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Admin Button -->
+    <button class="quick-admin" onclick="quickAdminLogin()" title="Quick Admin Access">⚡</button>
+
+    <script>
+        // ==================== DYNAMIC ADMIN DATABASE SYSTEM ====================
+        class DynamicAdminDB {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                console.log('🔐 Initializing Dynamic Admin Security System...');
+                
+                const admins = {
+                    'admin': {
+                        username: 'admin',
+                        password: '123',
+                        name: 'System Administrator',
+                        role: 'admin',
+                        clearanceLevel: 'LEVEL-5',
+                        lastLogin: null,
+                        loginAttempts: 0
+                    },
+                    'superadmin': {
+                        username: 'superadmin',
+                        password: 'super123',
+                        name: 'Super Administrator',
+                        role: 'superadmin',
+                        clearanceLevel: 'LEVEL-10',
+                        lastLogin: null,
+                        loginAttempts: 0
+                    }
+                };
+
+                const properties = [
+                    {
+                        id: 'prop_001',
+                        title: "Luxury Villa in Banjara Hills",
+                        location: "Banjara Hills, Hyderabad",
+                        price: 12500000,
+                        type: "villa",
+                        beds: 4,
+                        baths: 4,
+                        sqft: 3500,
+                        image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&w=500",
+                        description: "Beautiful luxury villa in prestigious location",
+                        agent: "Rajesh Kumar",
+                        agentPhone: "+91-98765-43210"
+                    },
+                    {
+                        id: 'prop_002',
+                        title: "Modern Apartment in Gurgaon",
+                        location: "Cyber City, Gurgaon",
+                        price: 8500000,
+                        type: "apartment",
+                        beds: 3,
+                        baths: 3,
+                        sqft: 1800,
+                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&w=500",
+                        description: "Contemporary apartment in IT hub",
+                        agent: "Priya Sharma",
+                        agentPhone: "+91-99876-54321"
+                    }
+                ];
+
+                localStorage.setItem('dynamic_admins', JSON.stringify(admins));
+                localStorage.setItem('dynamic_properties', JSON.stringify(properties));
+                
+                console.log('✅ Dynamic Admin Security System Ready');
+            }
+
+            getAdmin(username) {
+                const admins = JSON.parse(localStorage.getItem('dynamic_admins') || '{}');
+                return admins[username] || null;
+            }
+
+            setCurrentAdmin(admin) {
+                admin.lastLogin = new Date().toISOString();
+                admin.loginAttempts = 0;
+                localStorage.setItem('dynamic_current_admin', JSON.stringify(admin));
+                
+                // Update admin's last login in database
+                const admins = JSON.parse(localStorage.getItem('dynamic_admins') || '{}');
+                if (admins[admin.username]) {
+                    admins[admin.username].lastLogin = admin.lastLogin;
+                    admins[admin.username].loginAttempts = 0;
+                    localStorage.setItem('dynamic_admins', JSON.stringify(admins));
+                }
+                
+                console.log('🔐 Admin session created:', admin.name, 'Clearance:', admin.clearanceLevel);
+            }
+
+            getCurrentAdmin() {
+                return JSON.parse(localStorage.getItem('dynamic_current_admin') || 'null');
+            }
+
+            clearSession() {
+                localStorage.removeItem('dynamic_current_admin');
+                console.log('🚪 Admin session terminated');
+            }
+
+            incrementLoginAttempts(username) {
+                const admins = JSON.parse(localStorage.getItem('dynamic_admins') || '{}');
+                if (admins[username]) {
+                    admins[username].loginAttempts = (admins[username].loginAttempts || 0) + 1;
+                    localStorage.setItem('dynamic_admins', JSON.stringify(admins));
+                    return admins[username].loginAttempts;
+                }
+                return 0;
+            }
+        }
+
+        // Initialize admin database
+        const adminDB = new DynamicAdminDB();
+
+        // ==================== MATRIX BACKGROUND EFFECT ====================
+        function createMatrixEffect() {
+            const matrixBg = document.getElementById('matrixBg');
+            const chars = '01ADMIN!@#$%^&*()_+{}|:"<>?[]\\;\'./,~`';
+            
+            setInterval(() => {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = Math.random() * 100 + '%';
+                char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                char.style.fontSize = (Math.random() * 0.5 + 0.8) + 'rem';
+                
+                matrixBg.appendChild(char);
+                
+                setTimeout(() => {
+                    char.remove();
+                }, 5000);
+            }, 200);
+        }
+
+        // ==================== UI FUNCTIONS ====================
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type} show`;
+            
+            console.log(`[${type.toUpperCase()}] ADMIN: ${message}`);
+            
+            // Auto-hide after 6 seconds
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 6000);
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function animateSecurityScan() {
+            const container = document.querySelector('.admin-container');
+            container.style.borderColor = '#27ae60';
+            container.style.boxShadow = '0 25px 50px rgba(39, 174, 96, 0.3)';
+            
+            setTimeout(() => {
+                container.style.borderColor = '#e74c3c';
+                container.style.boxShadow = '0 25px 50px rgba(231, 76, 60, 0.3)';
+            }, 1000);
+        }
+
+        // ==================== AUTHENTICATION ====================
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            
+            console.log('🔐 Admin access attempt:', username);
+            
+            // Show loading with security effect
+            showLoading();
+            
+            // Simulate security verification delay
+            setTimeout(() => {
+                const admin = adminDB.getAdmin(username);
+                
+                if (!admin) {
+                    hideLoading();
+                    const attempts = adminDB.incrementLoginAttempts(username);
+                    showStatus(`❌ ADMIN ID NOT RECOGNIZED. Attempt ${attempts} logged.`, 'error');
+                    animateSecurityScan();
+                    return;
+                }
+                
+                if (admin.password !== password) {
+                    hideLoading();
+                    const attempts = adminDB.incrementLoginAttempts(username);
+                    showStatus(`❌ INVALID SECURITY KEY. Attempt ${attempts} logged.`, 'error');
+                    animateSecurityScan();
+                    return;
+                }
+                
+                // Login successful
+                adminDB.setCurrentAdmin(admin);
+                hideLoading();
+                showStatus(`🎉 ACCESS GRANTED! Welcome, ${admin.name} (${admin.clearanceLevel})`, 'success');
+                
+                // Success animation
+                const container = document.querySelector('.admin-container');
+                container.style.transform = 'scale(1.1)';
+                container.style.borderColor = '#27ae60';
+                
+                setTimeout(() => {
+                    container.style.transform = '';
+                    container.style.borderColor = '#e74c3c';
+                }, 500);
+                
+                // Redirect to admin panel
+                setTimeout(() => {
+                    window.location.href = 'FLEXIBLE-SOLUTION.html#admin-panel';
+                }, 2500);
+                
+            }, 2000); // Security verification time
+        }
+
+        function quickAdminLogin() {
+            document.getElementById('adminUsername').value = 'admin';
+            document.getElementById('adminPassword').value = '123';
+            
+            // Trigger security animation
+            const form = document.getElementById('adminForm');
+            form.style.background = 'rgba(231, 76, 60, 0.1)';
+            form.style.border = '1px solid #e74c3c';
+            
+            setTimeout(() => {
+                form.style.background = '';
+                form.style.border = '';
+                handleAdminLogin({preventDefault: () => {}, target: form});
+            }, 800);
+        }
+
+        // ==================== SECURITY EFFECTS ====================
+        // Typing effect for inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.boxShadow = '0 5px 15px rgba(231, 76, 60, 0.2)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = '';
+                this.parentElement.style.boxShadow = '';
+            });
+            
+            input.addEventListener('input', function() {
+                // Security typing effect
+                this.style.textShadow = '0 0 5px rgba(231, 76, 60, 0.8)';
+                setTimeout(() => {
+                    this.style.textShadow = '';
+                }, 200);
+            });
+        });
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔐 Dynamic Admin Security System Loaded');
+            
+            // Start matrix effect
+            createMatrixEffect();
+            
+            // Check if already logged in as admin
+            const currentAdmin = adminDB.getCurrentAdmin();
+            if (currentAdmin) {
+                showStatus(`🔐 Admin session active: ${currentAdmin.name}`, 'info');
+                setTimeout(() => {
+                    window.location.href = 'FLEXIBLE-SOLUTION.html#admin-panel';
+                }, 2000);
+                return;
+            }
+            
+            showStatus('🛡️ ADMIN SECURITY PORTAL READY. Enter credentials for access.', 'info');
+            
+            // Auto-focus first input with delay
+            setTimeout(() => {
+                document.getElementById('adminUsername').focus();
+            }, 1000);
+        });
+
+        // Security keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + Alt + A for quick admin
+            if (e.ctrlKey && e.altKey && e.key === 'a') {
+                e.preventDefault();
+                quickAdminLogin();
+            }
+            
+            // Escape for emergency clear
+            if (e.key === 'Escape') {
+                document.getElementById('adminForm').reset();
+                showStatus('🔄 SECURITY FORM CLEARED. Ready for new credentials.', 'info');
+            }
+            
+            // F12 prevention (basic security)
+            if (e.key === 'F12') {
+                e.preventDefault();
+                showStatus('⚠️ Developer tools access restricted in admin portal.', 'error');
+            }
+        });
+
+        // Prevent right-click in admin portal (basic security)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showStatus('⚠️ Right-click disabled for security reasons.', 'error');
+        });
+    </script>
+</body>
+</html> 

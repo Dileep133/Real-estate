@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLEXIBLE ELITE REALTY - Complete Solution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .status-display {
+            background: #e8f5e8;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            color: #27ae60;
+            font-weight: bold;
+            border: 2px solid #27ae60;
+        }
+        
+        /* ==================== MAIN CONTAINER ==================== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* ==================== TABS ==================== */
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tab {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        /* ==================== CONTENT AREAS ==================== */
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ==================== FORMS ==================== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* ==================== BUTTONS ==================== */
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0.25rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* ==================== ALERTS ==================== */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            font-weight: bold;
+            border-left: 4px solid;
+        }
+        
+        .alert-success {
+            background: #d5f4e6;
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+        
+        .alert-error {
+            background: #fdf2f2;
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        
+        .alert-info {
+            background: #e8f4fd;
+            color: #3498db;
+            border-color: #3498db;
+        }
+        
+        /* ==================== PROPERTY GRID ==================== */
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .property-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .property-content {
+            padding: 1.5rem;
+        }
+        
+        .property-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .property-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .property-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .tabs {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 0.25rem;
+                padding: 0.5rem;
+            }
+            
+            .tab {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .content {
+                padding: 1rem;
+                margin: 1rem 0.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .property-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 0 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-header {
+                padding: 0.5rem 1rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .status-display {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.8rem;
+            }
+            
+            .tabs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .content {
+                padding: 1rem;
+                border-radius: 15px;
+            }
+        }
+        
+        /* ==================== LOADING ANIMATION ==================== */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-left: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ==================== QUICK ACCESS ==================== */
+        .quick-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+        
+        .quick-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(39, 174, 96, 0.3);
+            transition: transform 0.2s ease;
+        }
+        
+        .quick-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">🏠 Elite Realty</div>
+            <div class="status-display" id="status-display">
+                ✅ System Ready - Flexible & Responsive
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('welcome')">🏠 Welcome</button>
+            <button class="tab" onclick="showTab('user-login')">👤 User Login</button>
+            <button class="tab" onclick="showTab('admin-login')">🔐 Admin Login</button>
+            <button class="tab" onclick="showTab('properties')">🏘️ Properties</button>
+            <button class="tab" onclick="showTab('admin-panel')">⚙️ Admin Panel</button>
+            <button class="tab" onclick="showTab('test')">🧪 Test</button>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Welcome Tab -->
+            <div id="welcome-tab" class="tab-content active">
+                <h1>🏠 Welcome to Elite Realty - Flexible Solution</h1>
+                <div class="alert alert-info">
+                    <strong>✅ FULLY RESPONSIVE:</strong> This solution adapts to any screen size and works perfectly on all devices!
+                </div>
+                
+                <div class="form-grid">
+                    <div style="background: #e8f6ff; padding: 1.5rem; border-radius: 10px;">
+                        <h3>👤 User Credentials</h3>
+                        <p><strong>Email:</strong> user@example.com</p>
+                        <p><strong>Password:</strong> user123</p>
+                        <button class="btn btn-success" onclick="quickUserLogin()">🚀 Quick User Login</button>
+                    </div>
+                    <div style="background: #fff5f5; padding: 1.5rem; border-radius: 10px;">
+                        <h3>🔐 Admin Credentials</h3>
+                        <p><strong>Username:</strong> admin</p>
+                        <p><strong>Password:</strong> 123</p>
+                        <button class="btn btn-danger" onclick="quickAdminLogin()">🔐 Quick Admin Login</button>
+                    </div>
+                </div>
+                
+                <div id="current-user-status"></div>
+                
+                <h3>🎯 Features:</h3>
+                <ul style="margin: 1rem 0; padding-left: 2rem; line-height: 1.8;">
+                    <li>✅ <strong>Fully Responsive:</strong> Works on desktop, tablet, and mobile</li>
+                    <li>✅ <strong>Property Management:</strong> Add, view, and manage properties</li>
+                    <li>✅ <strong>Real-time Updates:</strong> Properties appear instantly</li>
+                    <li>✅ <strong>User Authentication:</strong> Secure login system</li>
+                    <li>✅ <strong>No Server Required:</strong> Works directly in browser</li>
+                </ul>
+            </div>
+
+            <!-- User Login Tab -->
+            <div id="user-login-tab" class="tab-content">
+                <h2>👤 User Login Portal</h2>
+                <div id="user-login-status" class="alert alert-info">
+                    Enter your credentials to access the property portal
+                </div>
+                
+                <form onsubmit="return handleUserLogin(event)" style="max-width: 400px;">
+                    <div class="form-group">
+                        <label for="user-email">📧 Email Address</label>
+                        <input type="email" id="user-email" value="user@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password">🔒 Password</label>
+                        <input type="password" id="user-password" value="user123" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-large">🚀 Login as User</button>
+                </form>
+            </div>
+
+            <!-- Admin Login Tab -->
+            <div id="admin-login-tab" class="tab-content">
+                <h2>🔐 Admin Login Portal</h2>
+                <div id="admin-login-status" class="alert alert-info">
+                    Administrator access required for property management
+                </div>
+                
+                <form onsubmit="return handleAdminLogin(event)" style="max-width: 400px;">
+                    <div class="form-group">
+                        <label for="admin-username">👤 Username</label>
+                        <input type="text" id="admin-username" value="admin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">🔒 Password</label>
+                        <input type="password" id="admin-password" value="123" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-large">🔐 Login as Admin</button>
+                </form>
+            </div>
+
+            <!-- Properties Tab -->
+            <div id="properties-tab" class="tab-content">
+                <h2>🏘️ Available Properties</h2>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <button class="btn" onclick="loadProperties()">🔄 Refresh Properties</button>
+                    <button class="btn btn-success" onclick="triggerPropertyUpdate()">🔄 Force Update</button>
+                </div>
+                <div id="properties-count" class="alert alert-info">Loading properties...</div>
+                <div id="properties-container" class="property-grid"></div>
+            </div>
+
+            <!-- Admin Panel Tab -->
+            <div id="admin-panel-tab" class="tab-content">
+                <h2>⚙️ Admin Panel - Property Management</h2>
+                <div id="admin-panel-status"></div>
+                
+                <form onsubmit="return handleAddProperty(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="prop-title">🏠 Property Title</label>
+                            <input type="text" id="prop-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prop-location">📍 Location</label>
+                            <input type="text" id="prop-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prop-price">💰 Price (INR)</label>
+                            <input type="number" id="prop-price" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prop-type">🏗️ Property Type</label>
+                            <select id="prop-type" required>
+                                <option value="">Select Type</option>
+                                <option value="house">House</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="villa">Villa</option>
+                                <option value="penthouse">Penthouse</option>
+                                <option value="bungalow">Bungalow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="prop-beds">🛏️ Bedrooms</label>
+                            <input type="number" id="prop-beds" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prop-baths">🚿 Bathrooms</label>
+                            <input type="number" id="prop-baths" min="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prop-image">🖼️ Image URL</label>
+                        <input type="url" id="prop-image" placeholder="https://example.com/image.jpg" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prop-description">📝 Description</label>
+                        <textarea id="prop-description" rows="3" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success btn-large">➕ Add New Property</button>
+                </form>
+                
+                <div style="margin-top: 2rem;">
+                    <h3>📊 Current Properties</h3>
+                    <div id="admin-properties-list"></div>
+                </div>
+            </div>
+
+            <!-- Test Tab -->
+            <div id="test-tab" class="tab-content">
+                <h2>🧪 System Testing & Diagnostics</h2>
+                
+                <div class="form-grid">
+                    <div>
+                        <h3>🔐 Authentication Tests</h3>
+                        <button class="btn" onclick="testUserLogin()">👤 Test User Login</button>
+                        <button class="btn" onclick="testAdminLogin()">🔐 Test Admin Login</button>
+                        <button class="btn btn-danger" onclick="logout()">🚪 Logout</button>
+                    </div>
+                    
+                    <div>
+                        <h3>🏠 Property Tests</h3>
+                        <button class="btn" onclick="testAddProperty()">➕ Add Test Property</button>
+                        <button class="btn" onclick="loadProperties()">🔄 Reload Properties</button>
+                        <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
+                    </div>
+                </div>
+                
+                <div id="test-results" style="margin-top: 2rem;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Access Buttons -->
+    <div class="quick-access">
+        <button class="quick-btn" onclick="quickUserLogin()">⚡ User</button>
+        <button class="quick-btn" onclick="quickAdminLogin()">⚡ Admin</button>
+        <button class="quick-btn" onclick="showTab('properties')">🏠 Props</button>
+        <button class="quick-btn" onclick="openConsole()">🔍 Debug</button>
+    </div>
+
+    <script>
+        // ==================== FLEXIBLE DATABASE SYSTEM ====================
+        class FlexibleDB {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                console.log('🚀 Initializing Flexible Database...');
+                
+                // Clear any corrupted data
+                this.clearCorruptedData();
+                
+                const users = {
+                    'user@example.com': {
+                        email: 'user@example.com',
+                        password: 'user123',
+                        name: 'John Doe',
+                        role: 'user'
+                    }
+                };
+                
+                const admins = {
+                    'admin': {
+                        username: 'admin',
+                        password: '123',
+                        name: 'Administrator',
+                        role: 'admin'
+                    }
+                };
+                
+                const properties = [
+                    {
+                        id: 'prop_001',
+                        title: "Luxury Villa in Banjara Hills",
+                        location: "Banjara Hills, Hyderabad",
+                        price: 12500000,
+                        type: "villa",
+                        beds: 4,
+                        baths: 4,
+                        sqft: 3500,
+                        image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&w=500",
+                        description: "Beautiful luxury villa in prestigious Banjara Hills with modern amenities and garden.",
+                        agent: "Rajesh Kumar",
+                        agentPhone: "+91-98765-43210",
+                        dateAdded: "2024-01-15T10:00:00.000Z"
+                    },
+                    {
+                        id: 'prop_002',
+                        title: "Modern Apartment in Gurgaon",
+                        location: "Cyber City, Gurgaon",
+                        price: 8500000,
+                        type: "apartment",
+                        beds: 3,
+                        baths: 3,
+                        sqft: 1800,
+                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&w=500",
+                        description: "Contemporary apartment in the heart of Cyber City with excellent connectivity.",
+                        agent: "Priya Sharma",
+                        agentPhone: "+91-99876-54321",
+                        dateAdded: "2024-01-16T11:30:00.000Z"
+                    }
+                ];
+                
+                // Store data
+                localStorage.setItem('flexible_users', JSON.stringify(users));
+                localStorage.setItem('flexible_admins', JSON.stringify(admins));
+                localStorage.setItem('flexible_properties', JSON.stringify(properties));
+                
+                console.log('✅ Flexible Database Ready');
+                console.log('👤 Users:', Object.keys(users).length);
+                console.log('🔐 Admins:', Object.keys(admins).length);
+                console.log('🏠 Properties:', properties.length);
+            }
+
+            clearCorruptedData() {
+                // Clean up any old or corrupted data
+                const oldKeys = ['simple_users', 'simple_admins', 'simple_properties', 'simple_current_user', 'simple_session'];
+                oldKeys.forEach(key => localStorage.removeItem(key));
+            }
+
+            getUser(email) {
+                const users = JSON.parse(localStorage.getItem('flexible_users') || '{}');
+                return users[email] || null;
+            }
+
+            getAdmin(username) {
+                const admins = JSON.parse(localStorage.getItem('flexible_admins') || '{}');
+                return admins[username] || null;
+            }
+
+            getAllProperties() {
+                const properties = JSON.parse(localStorage.getItem('flexible_properties') || '[]');
+                console.log('📊 Retrieved properties:', properties.length);
+                return properties;
+            }
+
+            addProperty(propertyData) {
+                console.log('➕ Adding new property:', propertyData.title);
+                const properties = this.getAllProperties();
+                const newProperty = {
+                    id: 'prop_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    ...propertyData,
+                    sqft: propertyData.sqft || Math.floor(Math.random() * 1000) + 1000,
+                    agent: propertyData.agent || currentUser?.name || 'Admin',
+                    agentPhone: propertyData.agentPhone || '+91-9876543210',
+                    dateAdded: new Date().toISOString()
+                };
+                
+                properties.push(newProperty);
+                localStorage.setItem('flexible_properties', JSON.stringify(properties));
+                
+                // Trigger update event
+                this.triggerUpdate();
+                
+                console.log('✅ Property added successfully:', newProperty.id);
+                return newProperty;
+            }
+
+            setCurrentUser(user) {
+                localStorage.setItem('flexible_current_user', JSON.stringify(user));
+                console.log('👤 Current user set:', user.name || user.username);
+            }
+
+            getCurrentUser() {
+                return JSON.parse(localStorage.getItem('flexible_current_user') || 'null');
+            }
+
+            clearSession() {
+                localStorage.removeItem('flexible_current_user');
+                console.log('🚪 Session cleared');
+            }
+
+            clearAll() {
+                localStorage.removeItem('flexible_users');
+                localStorage.removeItem('flexible_admins');
+                localStorage.removeItem('flexible_properties');
+                localStorage.removeItem('flexible_current_user');
+                this.init();
+                console.log('🗑️ All data cleared and reset');
+            }
+
+            triggerUpdate() {
+                // Force update across all tabs/windows
+                localStorage.setItem('update_trigger', Date.now().toString());
+                window.dispatchEvent(new Event('storage'));
+                console.log('🔄 Update triggered');
+            }
+        }
+
+        // Initialize database
+        const db = new FlexibleDB();
+        let currentUser = null;
+
+        // ==================== UI FUNCTIONS ====================
+        function showTab(tabName) {
+            console.log('📂 Switching to tab:', tabName);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + '-tab');
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Add active class to clicked button
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Load data for specific tabs
+            if (tabName === 'properties') {
+                loadProperties();
+            } else if (tabName === 'welcome') {
+                updateCurrentUserStatus();
+            } else if (tabName === 'admin-panel') {
+                loadAdminProperties();
+            }
+        }
+
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.className = `alert alert-${type}`;
+                element.innerHTML = message;
+            }
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateStatusBar(message) {
+            const statusDisplay = document.getElementById('status-display');
+            if (statusDisplay) {
+                statusDisplay.textContent = message;
+            }
+            console.log('📊 Status:', message);
+        }
+
+        function updateCurrentUserStatus() {
+            currentUser = db.getCurrentUser();
+            const statusDiv = document.getElementById('current-user-status');
+            
+            if (currentUser) {
+                statusDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        ✅ <strong>Logged in as:</strong> ${currentUser.name || currentUser.username} (${currentUser.role})
+                        <button class="btn" onclick="logout()" style="margin-left: 1rem;">🚪 Logout</button>
+                    </div>
+                `;
+                updateStatusBar(`✅ ${currentUser.role}: ${currentUser.name || currentUser.username}`);
+            } else {
+                statusDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        ℹ️ Not logged in. Please use the login tabs to authenticate.
+                    </div>
+                `;
+                updateStatusBar('ℹ️ Not logged in');
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // ==================== AUTHENTICATION ====================
+        function handleUserLogin(event) {
+            event.preventDefault();
+            showLoading();
+            
+            const email = document.getElementById('user-email').value;
+            const password = document.getElementById('user-password').value;
+            
+            console.log('👤 User login attempt:', email);
+            
+            const user = db.getUser(email);
+            
+            if (!user || user.password !== password) {
+                hideLoading();
+                showStatus('user-login-status', '❌ Invalid email or password', 'error');
+                return false;
+            }
+            
+            currentUser = user;
+            db.setCurrentUser(user);
+            
+            setTimeout(() => {
+                hideLoading();
+                showStatus('user-login-status', `✅ Welcome ${user.name}! Redirecting...`, 'success');
+                setTimeout(() => showTab('properties'), 1000);
+            }, 500);
+            
+            return false;
+        }
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            showLoading();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            console.log('🔐 Admin login attempt:', username);
+            
+            const admin = db.getAdmin(username);
+            
+            if (!admin || admin.password !== password) {
+                hideLoading();
+                showStatus('admin-login-status', '❌ Invalid admin credentials', 'error');
+                return false;
+            }
+            
+            currentUser = admin;
+            db.setCurrentUser(admin);
+            
+            setTimeout(() => {
+                hideLoading();
+                showStatus('admin-login-status', `✅ Welcome Administrator! Access granted.`, 'success');
+                setTimeout(() => {
+                    showTab('admin-panel');
+                    showStatus('admin-panel-status', '✅ Admin panel access granted. You can now manage properties.', 'success');
+                }, 1000);
+            }, 500);
+            
+            return false;
+        }
+
+        function logout() {
+            currentUser = null;
+            db.clearSession();
+            updateStatusBar('🚪 Logged out');
+            updateCurrentUserStatus();
+            showTab('welcome');
+            console.log('🚪 User logged out');
+        }
+
+        // ==================== PROPERTY MANAGEMENT ====================
+        function loadProperties() {
+            console.log('🏠 Loading properties...');
+            
+            const properties = db.getAllProperties();
+            const container = document.getElementById('properties-container');
+            const countDiv = document.getElementById('properties-count');
+            
+            if (!container) {
+                console.error('Properties container not found');
+                return;
+            }
+            
+            countDiv.innerHTML = `📊 Found ${properties.length} properties available`;
+            
+            if (properties.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No properties available. Admin can add new properties.</div>';
+                return;
+            }
+            
+            container.innerHTML = properties.map(property => `
+                <div class="property-card">
+                    <img src="${property.image}" alt="${property.title}" class="property-image" 
+                         onerror="this.src='https://via.placeholder.com/350x200?text=Property+Image'">
+                    <div class="property-content">
+                        <div class="property-title">${property.title}</div>
+                        <div class="property-price">₹${property.price.toLocaleString()}</div>
+                        <div class="property-details">
+                            <span>📍 ${property.location}</span>
+                            <span>🏠 ${property.type}</span>
+                            <span>🛏️ ${property.beds} beds</span>
+                            <span>🚿 ${property.baths} baths</span>
+                            <span>📐 ${property.sqft} sq ft</span>
+                        </div>
+                        <p style="margin-bottom: 1rem; color: #7f8c8d;">${property.description}</p>
+                        <p style="font-weight: bold; color: #3498db;">Agent: ${property.agent} (${property.agentPhone})</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            updateStatusBar(`📊 Loaded ${properties.length} properties`);
+        }
+
+        function loadAdminProperties() {
+            const properties = db.getAllProperties();
+            const listDiv = document.getElementById('admin-properties-list');
+            
+            if (listDiv) {
+                listDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        Currently managing ${properties.length} properties
+                    </div>
+                    <div class="property-grid">
+                        ${properties.map(property => `
+                            <div class="property-card">
+                                <img src="${property.image}" alt="${property.title}" class="property-image" 
+                                     onerror="this.src='https://via.placeholder.com/350x200?text=Property+Image'">
+                                <div class="property-content">
+                                    <div class="property-title">${property.title}</div>
+                                    <div class="property-price">₹${property.price.toLocaleString()}</div>
+                                    <p style="font-size: 0.9rem; color: #7f8c8d;">ID: ${property.id}</p>
+                                    <p style="font-size: 0.9rem; color: #7f8c8d;">Added: ${new Date(property.dateAdded).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        function handleAddProperty(event) {
+            event.preventDefault();
+            
+            if (!currentUser || currentUser.role !== 'admin') {
+                showStatus('admin-panel-status', '❌ Admin access required to add properties', 'error');
+                return false;
+            }
+            
+            showLoading();
+            
+            const propertyData = {
+                title: document.getElementById('prop-title').value,
+                location: document.getElementById('prop-location').value,
+                price: parseInt(document.getElementById('prop-price').value),
+                type: document.getElementById('prop-type').value,
+                beds: parseInt(document.getElementById('prop-beds').value),
+                baths: parseInt(document.getElementById('prop-baths').value),
+                image: document.getElementById('prop-image').value,
+                description: document.getElementById('prop-description').value
+            };
+            
+            console.log('➕ Adding property:', propertyData);
+            
+            setTimeout(() => {
+                const newProperty = db.addProperty(propertyData);
+                hideLoading();
+                
+                showStatus('admin-panel-status', `✅ Property "${propertyData.title}" added successfully! ID: ${newProperty.id}`, 'success');
+                updateStatusBar(`✅ Added: ${propertyData.title}`);
+                
+                // Clear form
+                event.target.reset();
+                
+                // Reload admin properties list
+                loadAdminProperties();
+                
+                // Force update properties tab
+                loadProperties();
+            }, 1000);
+            
+            return false;
+        }
+
+        function triggerPropertyUpdate() {
+            db.triggerUpdate();
+            loadProperties();
+            showStatus('properties-count', '🔄 Properties forcefully updated!', 'success');
+        }
+
+        // ==================== TEST FUNCTIONS ====================
+        function testUserLogin() {
+            document.getElementById('user-email').value = 'user@example.com';
+            document.getElementById('user-password').value = 'user123';
+            showTab('user-login');
+            setTimeout(() => handleUserLogin({preventDefault: () => {}}), 500);
+        }
+
+        function testAdminLogin() {
+            document.getElementById('admin-username').value = 'admin';
+            document.getElementById('admin-password').value = '123';
+            showTab('admin-login');
+            setTimeout(() => handleAdminLogin({preventDefault: () => {}}), 500);
+        }
+
+        function testAddProperty() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('Please login as admin first!');
+                testAdminLogin();
+                return;
+            }
+            
+            const testProperties = [
+                {
+                    title: 'Test Apartment ' + Date.now(),
+                    location: 'Mumbai, Maharashtra',
+                    price: 6500000,
+                    type: 'apartment',
+                    beds: 2,
+                    baths: 2,
+                    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&w=500',
+                    description: 'Beautiful test apartment with modern amenities.'
+                },
+                {
+                    title: 'Test Villa ' + Date.now(),
+                    location: 'Bangalore, Karnataka',
+                    price: 15000000,
+                    type: 'villa',
+                    beds: 4,
+                    baths: 4,
+                    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&w=500',
+                    description: 'Luxury test villa with garden and pool.'
+                }
+            ];
+            
+            const randomProperty = testProperties[Math.floor(Math.random() * testProperties.length)];
+            
+            Object.keys(randomProperty).forEach(key => {
+                const element = document.getElementById('prop-' + key);
+                if (element) {
+                    element.value = randomProperty[key];
+                }
+            });
+            
+            showTab('admin-panel');
+            setTimeout(() => handleAddProperty({preventDefault: () => {}, target: {reset: () => {}}}), 1000);
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data and reset the system?')) {
+                db.clearAll();
+                currentUser = null;
+                updateStatusBar('🗑️ All data cleared');
+                showTab('welcome');
+                updateCurrentUserStatus();
+                loadProperties();
+            }
+        }
+
+        function quickUserLogin() {
+            testUserLogin();
+        }
+
+        function quickAdminLogin() {
+            testAdminLogin();
+        }
+
+        function openConsole() {
+            alert('Press F12 to open Developer Console and see detailed logs');
+        }
+
+        // ==================== EVENT LISTENERS ====================
+        // Listen for storage events (real-time updates)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'flexible_properties' || e.key === 'update_trigger') {
+                console.log('🔄 Storage update detected, refreshing properties...');
+                loadProperties();
+                loadAdminProperties();
+            }
+        });
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 FLEXIBLE ELITE REALTY SYSTEM LOADED');
+            updateCurrentUserStatus();
+            loadProperties();
+            updateStatusBar('✅ System ready - Flexible & Responsive');
+            
+            // Auto-resize handling
+            window.addEventListener('resize', function() {
+                console.log('📱 Window resized to:', window.innerWidth + 'x' + window.innerHeight);
+            });
+        });
+    </script>
+</body>
+</html> 

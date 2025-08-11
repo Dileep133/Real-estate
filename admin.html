@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Elite Realty</title>
+    <!-- Google Fonts for beautiful typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+    <!-- Header -->
+    <header class="header admin-header">
+        <div class="nav-container">
+            <div class="logo">Elite Realty - Admin Panel</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">View Site</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#users">Users</a></li>
+                    <li><span id="admin-name">Admin</span></li>
+                    <li><button onclick="logout()" class="logout-btn">Logout</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Container -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-menu">
+                <div class="menu-item active" onclick="showSection('dashboard')">
+                    <span class="menu-icon">📊</span>
+                    <span class="menu-text">Dashboard</span>
+                </div>
+                <div class="menu-item" onclick="showSection('add-property')">
+                    <span class="menu-icon">➕</span>
+                    <span class="menu-text">Add Property</span>
+                </div>
+                <div class="menu-item" onclick="showSection('manage-properties')">
+                    <span class="menu-icon">🏠</span>
+                    <span class="menu-text">Manage Properties</span>
+                </div>
+                <div class="menu-item" onclick="showSection('users')">
+                    <span class="menu-icon">👥</span>
+                    <span class="menu-text">User Management</span>
+                </div>
+                <div class="menu-item" onclick="showSection('analytics')">
+                    <span class="menu-icon">📈</span>
+                    <span class="menu-text">Analytics</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="admin-section active">
+                <div class="section-header">
+                    <h2>Dashboard Overview</h2>
+                    <p>Welcome to the Elite Realty admin panel</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏠</div>
+                        <div class="stat-info">
+                            <h3 id="total-properties">0</h3>
+                            <p>Total Properties</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3 id="total-users">0</h3>
+                            <p>Registered Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <h3 id="avg-price">$0</h3>
+                            <p>Average Price</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3 id="featured-properties">0</h3>
+                            <p>Featured Properties</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div id="activity-list" class="activity-list">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Property Section -->
+            <div id="add-property-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Add New Property</h2>
+                    <p>Create a new property listing</p>
+                </div>
+
+                <form id="add-property-form" class="property-form" onsubmit="handleAddProperty(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="property-title">Property Title*</label>
+                            <input type="text" id="property-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="property-type">Property Type*</label>
+                            <select id="property-type" required>
+                                <option value="">Select Type</option>
+                                <option value="house">House</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="villa">Villa</option>
+                                <option value="penthouse">Penthouse</option>
+                                <option value="townhouse">Townhouse</option>
+                                <option value="bungalow">Bungalow</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="property-price">Price (INR)*</label>
+                            <input type="number" id="property-price" min="0" step="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="property-location">Location*</label>
+                            <input type="text" id="property-location" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="property-beds">Bedrooms*</label>
+                            <input type="number" id="property-beds" min="1" max="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="property-baths">Bathrooms*</label>
+                            <input type="number" id="property-baths" min="1" max="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="property-sqft">Square Feet*</label>
+                            <input type="number" id="property-sqft" min="100" step="50" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="property-image">Image URL*</label>
+                        <input type="url" id="property-image" required placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="property-description">Description*</label>
+                        <textarea id="property-description" rows="4" required placeholder="Describe the property..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="property-features">Features (comma-separated)</label>
+                        <input type="text" id="property-features" placeholder="Swimming Pool, Garden, Garage, Security System">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="property-agent">Agent Name*</label>
+                            <input type="text" id="property-agent" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="property-agent-phone">Agent Phone*</label>
+                            <input type="tel" id="property-agent-phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" onclick="resetForm()" class="btn-secondary">Reset Form</button>
+                        <button type="submit" class="btn-primary">Add Property</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Manage Properties Section -->
+            <div id="manage-properties-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Properties</h2>
+                    <p>Edit or delete existing properties</p>
+                </div>
+
+                <div class="properties-filters">
+                    <input type="text" id="search-properties" placeholder="Search properties..." onkeyup="filterProperties()">
+                    <select id="filter-type" onchange="filterProperties()">
+                        <option value="">All Types</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                        <option value="villa">Villa</option>
+                    </select>
+                </div>
+
+                <div id="properties-list" class="properties-list">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users-section" class="admin-section">
+                <div class="section-header">
+                    <h2>User Management</h2>
+                    <p>View and manage registered users</p>
+                </div>
+
+                <div id="users-list" class="users-list">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Analytics & Reports</h2>
+                    <p>Property and user statistics</p>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Property Distribution</h3>
+                        <div id="property-type-chart" class="chart">
+                            <!-- Chart will be generated here -->
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Price Ranges</h3>
+                        <div id="price-range-chart" class="chart">
+                            <!-- Chart will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Action</h3>
+            <p id="confirmation-message">Are you sure?</p>
+            <div class="modal-actions">
+                <button onclick="closeModal()" class="btn-secondary">Cancel</button>
+                <button id="confirm-action-btn" class="btn-danger">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Details Modal -->
+    <div id="property-modal" class="modal">
+        <div class="modal-content large">
+            <span class="close-btn" onclick="closePropertyModal()">&times;</span>
+            <div id="property-modal-content">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Check authentication immediately when admin page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔐 Admin panel loading - checking authentication...');
+            
+            const authStatus = checkAuthStatus();
+            
+            // If user is not authenticated, redirect to login
+            if (!authStatus.isAuthenticated) {
+                alert('Please login to access the admin panel.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // If user is not admin, redirect to main site
+            if (authStatus.user.role !== 'admin') {
+                alert('Access denied. Admin privileges required.');
+                window.location.href = 'user-login.html';
+                return;
+            }
+            
+            // If we reach here, user is authenticated admin
+            console.log('✅ Admin access granted for:', authStatus.user.name);
+            document.getElementById('admin-name').textContent = authStatus.user.name;
+            
+            // Initialize admin panel
+            initializeAdminPanel();
+        });
+    </script>
+    <script src="admin.js?v=20250811094512"></script>
+</body>
+</html> 

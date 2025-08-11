@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Test - Elite Realty</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .test-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-admin {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .credentials {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .credentials h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .credentials p {
+            color: #856404;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Elite Realty Login System Test</h1>
+
+        <div class="test-section">
+            <h3>🏠 User Login Test</h3>
+            <p>Test the user login functionality:</p>
+            <button class="btn" onclick="testUserLogin()">🔐 Test User Login</button>
+            <button class="btn" onclick="openUserLogin()">👤 Open User Login Page</button>
+            
+            <div class="credentials">
+                <h4>👤 Test User Credentials:</h4>
+                <p><strong>Email:</strong> user@example.com</p>
+                <p><strong>Password:</strong> user123</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔐 Admin Login Test</h3>
+            <p>Test the admin login functionality:</p>
+            <button class="btn btn-admin" onclick="testAdminLogin()">🔐 Test Admin Login</button>
+            <button class="btn btn-admin" onclick="openAdminLogin()">👑 Open Admin Login Page</button>
+            
+            <div class="credentials">
+                <h4>🔐 Test Admin Credentials:</h4>
+                <p><strong>Username:</strong> admin</p>
+                <p><strong>Password:</strong> 123</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📊 System Status</h3>
+            <button class="btn btn-success" onclick="checkSystemStatus()">📋 Check System Status</button>
+            <button class="btn btn-success" onclick="clearAllData()">🗑️ Clear All Data</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Initialize test databases
+        function initTestDatabases() {
+            const users = {
+                'user@example.com': {
+                    email: 'user@example.com',
+                    password: 'user123',
+                    name: 'John Doe',
+                    role: 'user'
+                }
+            };
+
+            const admins = {
+                'admin': {
+                    username: 'admin',
+                    password: '123',
+                    name: 'System Administrator',
+                    role: 'admin'
+                }
+            };
+
+            localStorage.setItem('elite_users', JSON.stringify(users));
+            localStorage.setItem('elite_admins', JSON.stringify(admins));
+            
+            showResult('✅ Test databases initialized', 'success');
+        }
+
+        function showResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            resultsDiv.appendChild(statusDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (statusDiv.parentElement) {
+                    statusDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function testUserLogin() {
+            showResult('🔍 Testing user login...', 'info');
+            
+            const users = JSON.parse(localStorage.getItem('elite_users') || '{}');
+            const user = users['user@example.com'];
+            
+            if (!user) {
+                showResult('❌ User database not found. Initializing...', 'error');
+                initTestDatabases();
+                return;
+            }
+
+            if (user.password === 'user123') {
+                // Simulate login
+                localStorage.setItem('elite_current_user', JSON.stringify(user));
+                localStorage.setItem('elite_session', JSON.stringify({
+                    userId: user.email,
+                    role: user.role,
+                    loginTime: new Date().toISOString()
+                }));
+                showResult('✅ User login test successful!', 'success');
+            } else {
+                showResult('❌ User login test failed!', 'error');
+            }
+        }
+
+        function testAdminLogin() {
+            showResult('🔍 Testing admin login...', 'info');
+            
+            const admins = JSON.parse(localStorage.getItem('elite_admins') || '{}');
+            const admin = admins['admin'];
+            
+            if (!admin) {
+                showResult('❌ Admin database not found. Initializing...', 'error');
+                initTestDatabases();
+                return;
+            }
+
+            if (admin.password === '123') {
+                // Simulate login
+                localStorage.setItem('elite_current_user', JSON.stringify(admin));
+                localStorage.setItem('elite_session', JSON.stringify({
+                    userId: admin.username,
+                    role: admin.role,
+                    loginTime: new Date().toISOString()
+                }));
+                showResult('✅ Admin login test successful!', 'success');
+            } else {
+                showResult('❌ Admin login test failed!', 'error');
+            }
+        }
+
+        function openUserLogin() {
+            window.open('user-login.html', '_blank');
+        }
+
+        function openAdminLogin() {
+            window.open('admin-login.html', '_blank');
+        }
+
+        function checkSystemStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('elite_current_user') || 'null');
+            const currentSession = JSON.parse(localStorage.getItem('elite_session') || 'null');
+            const users = JSON.parse(localStorage.getItem('elite_users') || '{}');
+            const admins = JSON.parse(localStorage.getItem('elite_admins') || '{}');
+
+            let status = '📊 System Status:\n';
+            status += `👥 Users in database: ${Object.keys(users).length}\n`;
+            status += `🔐 Admins in database: ${Object.keys(admins).length}\n`;
+            
+            if (currentUser && currentSession) {
+                status += `✅ Current user logged in: ${currentUser.name} (${currentUser.role})\n`;
+                status += `⏰ Login time: ${new Date(currentSession.loginTime).toLocaleString()}`;
+            } else {
+                status += '❌ No user currently logged in';
+            }
+
+            showResult(status, 'info');
+        }
+
+        function clearAllData() {
+            localStorage.removeItem('elite_current_user');
+            localStorage.removeItem('elite_session');
+            localStorage.removeItem('elite_users');
+            localStorage.removeItem('elite_admins');
+            showResult('🗑️ All data cleared. Page will reload...', 'info');
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            initTestDatabases();
+            showResult('🚀 Login test system ready!', 'success');
+        });
+    </script>
+</body>
+</html> 

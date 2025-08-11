@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic User Login - Elite Realty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Background Elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .bg-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            background: white;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            background: white;
+            top: 70%;
+            left: 80%;
+            animation-delay: 5s;
+        }
+
+        .bg-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            background: white;
+            top: 40%;
+            left: 70%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(30px) rotate(240deg); }
+        }
+
+        /* Main Container */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 450px;
+            margin: 2rem;
+            overflow: hidden;
+            transform: translateY(0);
+            animation: slideUp 1s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Section */
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .login-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .user-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Form Section */
+        .login-form {
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: white;
+            padding: 0 0.5rem;
+            z-index: 1;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: 0;
+            font-size: 0.8rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Button Styles */
+        .login-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-message.success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+
+        .status-message.info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Demo Info */
+        .demo-info {
+            background: linear-gradient(135deg, #e2f3ff, #b8e6ff);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #b8e6ff;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .demo-info h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-info p {
+            color: #34495e;
+            margin: 0.3rem 0;
+        }
+
+        /* Links */
+        .links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .links a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-left: 6px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 1rem;
+                max-width: 100%;
+            }
+
+            .login-header {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+
+            .login-header h1 {
+                font-size: 2rem;
+            }
+
+            .user-icon {
+                font-size: 3rem;
+            }
+
+            .login-form {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .links a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+
+        /* Quick Access Button */
+        .quick-test {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .quick-test:hover {
+            transform: scale(1.1) rotate(360deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Main Login Container -->
+    <div class="login-container">
+        <!-- Header Section -->
+        <div class="login-header">
+            <div class="user-icon">👤</div>
+            <h1>Elite Realty</h1>
+            <p>User Portal Access</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="login-form">
+            <!-- Status Message -->
+            <div id="statusMessage" class="status-message"></div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <input type="email" id="userEmail" placeholder=" " required>
+                    <label for="userEmail">📧 Email Address</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="userPassword" placeholder=" " required>
+                    <label for="userPassword">🔒 Password</label>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    🚀 Access Portal
+                </button>
+            </form>
+
+            <!-- Demo Information -->
+            <div class="demo-info">
+                <h4>🎯 Demo Credentials</h4>
+                <p><strong>Email:</strong> user@example.com</p>
+                <p><strong>Password:</strong> user123</p>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="links">
+                <a href="dynamic-admin-login.html">🔐 Admin Login</a>
+                <a href="FLEXIBLE-SOLUTION.html">🏠 Main Site</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Test Button -->
+    <button class="quick-test" onclick="quickLogin()" title="Quick Test Login">⚡</button>
+
+    <script>
+        // ==================== DYNAMIC DATABASE SYSTEM ====================
+        class DynamicUserDB {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                console.log('🔐 Initializing Dynamic User Database...');
+                
+                const users = {
+                    'user@example.com': {
+                        email: 'user@example.com',
+                        password: 'user123',
+                        name: 'John Doe',
+                        role: 'user',
+                        avatar: '👤',
+                        lastLogin: null
+                    },
+                    'demo@user.com': {
+                        email: 'demo@user.com',
+                        password: 'demo123',
+                        name: 'Demo User',
+                        role: 'user',
+                        avatar: '🧑‍💼',
+                        lastLogin: null
+                    }
+                };
+
+                const properties = [
+                    {
+                        id: 'prop_001',
+                        title: "Luxury Villa in Banjara Hills",
+                        location: "Banjara Hills, Hyderabad",
+                        price: 12500000,
+                        type: "villa",
+                        beds: 4,
+                        baths: 4,
+                        sqft: 3500,
+                        image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&w=500",
+                        description: "Beautiful luxury villa in prestigious location",
+                        agent: "Rajesh Kumar",
+                        agentPhone: "+91-98765-43210"
+                    },
+                    {
+                        id: 'prop_002',
+                        title: "Modern Apartment in Gurgaon",
+                        location: "Cyber City, Gurgaon",
+                        price: 8500000,
+                        type: "apartment",
+                        beds: 3,
+                        baths: 3,
+                        sqft: 1800,
+                        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&w=500",
+                        description: "Contemporary apartment in IT hub",
+                        agent: "Priya Sharma",
+                        agentPhone: "+91-99876-54321"
+                    }
+                ];
+
+                localStorage.setItem('dynamic_users', JSON.stringify(users));
+                localStorage.setItem('dynamic_properties', JSON.stringify(properties));
+                
+                console.log('✅ Dynamic User Database Ready');
+            }
+
+            getUser(email) {
+                const users = JSON.parse(localStorage.getItem('dynamic_users') || '{}');
+                return users[email] || null;
+            }
+
+            setCurrentUser(user) {
+                user.lastLogin = new Date().toISOString();
+                localStorage.setItem('dynamic_current_user', JSON.stringify(user));
+                
+                // Update user's last login in database
+                const users = JSON.parse(localStorage.getItem('dynamic_users') || '{}');
+                if (users[user.email]) {
+                    users[user.email].lastLogin = user.lastLogin;
+                    localStorage.setItem('dynamic_users', JSON.stringify(users));
+                }
+                
+                console.log('👤 User session created:', user.name);
+            }
+
+            getCurrentUser() {
+                return JSON.parse(localStorage.getItem('dynamic_current_user') || 'null');
+            }
+
+            clearSession() {
+                localStorage.removeItem('dynamic_current_user');
+                console.log('🚪 User session cleared');
+            }
+        }
+
+        // Initialize database
+        const userDB = new DynamicUserDB();
+
+        // ==================== UI FUNCTIONS ====================
+        function showStatus(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message ${type} show`;
+            
+            console.log(`[${type.toUpperCase()}] ${message}`);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                statusEl.classList.remove('show');
+            }, 5000);
+        }
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function animateButton(button) {
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 150);
+        }
+
+        // ==================== AUTHENTICATION ====================
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            
+            console.log('👤 User login attempt:', email);
+            
+            // Animate button
+            animateButton(submitBtn);
+            
+            // Show loading
+            showLoading();
+            
+            // Simulate network delay for better UX
+            setTimeout(() => {
+                const user = userDB.getUser(email);
+                
+                if (!user) {
+                    hideLoading();
+                    showStatus('❌ User not found. Please check your email address.', 'error');
+                    return;
+                }
+                
+                if (user.password !== password) {
+                    hideLoading();
+                    showStatus('❌ Incorrect password. Please try again.', 'error');
+                    return;
+                }
+                
+                // Login successful
+                userDB.setCurrentUser(user);
+                hideLoading();
+                showStatus(`🎉 Welcome back, ${user.name}! Redirecting to portal...`, 'success');
+                
+                // Add success animation
+                document.querySelector('.login-container').style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    document.querySelector('.login-container').style.transform = '';
+                }, 300);
+                
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'FLEXIBLE-SOLUTION.html#properties';
+                }, 2000);
+                
+            }, 1500); // Realistic loading time
+        }
+
+        function quickLogin() {
+            document.getElementById('userEmail').value = 'user@example.com';
+            document.getElementById('userPassword').value = 'user123';
+            
+            // Trigger form animation
+            const form = document.getElementById('loginForm');
+            form.style.background = 'rgba(102, 126, 234, 0.1)';
+            setTimeout(() => {
+                form.style.background = '';
+                handleLogin({preventDefault: () => {}, target: form});
+            }, 500);
+        }
+
+        // ==================== ANIMATIONS & EFFECTS ====================
+        // Parallax effect for background elements
+        document.addEventListener('mousemove', function(e) {
+            const elements = document.querySelectorAll('.bg-element');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            elements.forEach((element, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (mouseX * speed * 20) - 10;
+                const y = (mouseY * speed * 20) - 10;
+                element.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
+            });
+        });
+
+        // Form field focus effects
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = '';
+            });
+        });
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Dynamic User Login System Loaded');
+            
+            // Check if already logged in
+            const currentUser = userDB.getCurrentUser();
+            if (currentUser) {
+                showStatus(`👋 Welcome back, ${currentUser.name}! You're already logged in.`, 'info');
+                setTimeout(() => {
+                    window.location.href = 'FLEXIBLE-SOLUTION.html#properties';
+                }, 2000);
+                return;
+            }
+            
+            showStatus('🔐 Ready to login. Use demo credentials or enter your own.', 'info');
+            
+            // Auto-focus first input
+            setTimeout(() => {
+                document.getElementById('userEmail').focus();
+            }, 500);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + T for quick test
+            if (e.altKey && e.key === 't') {
+                e.preventDefault();
+                quickLogin();
+            }
+            
+            // Escape to clear form
+            if (e.key === 'Escape') {
+                document.getElementById('loginForm').reset();
+                showStatus('Form cleared. Ready for new input.', 'info');
+            }
+        });
+    </script>
+</body>
+</html> 

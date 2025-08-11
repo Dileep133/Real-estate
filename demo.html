@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Realty - Demo Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f6fa;
+        }
+        .demo-card {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .demo-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            cursor: pointer;
+        }
+        .admin-btn {
+            background: #e74c3c;
+        }
+        .demo-btn:hover {
+            opacity: 0.8;
+        }
+        .credentials {
+            background: #e8f4f8;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        h1 { color: #2c3e50; }
+        h2 { color: #34495e; }
+    </style>
+</head>
+<body>
+    <h1>🏠 Elite Realty - Demo Guide</h1>
+    
+    <div class="demo-card">
+        <h2>🚀 Quick Start</h2>
+        <p>Welcome to the Elite Realty demo! This system includes user registration, login, property management, and a complete admin panel.</p>
+        <p><strong>⚠️ Important:</strong> The main website now requires authentication. You must login first!</p>
+        <a href="welcome.html" class="demo-btn">Welcome Page</a>
+        <a href="login.html" class="demo-btn">Go to Login</a>
+        <a href="admin.html" class="demo-btn admin-btn">Admin Panel</a>
+    </div>
+
+    <div class="demo-card">
+        <h2>🔐 Demo Credentials</h2>
+        
+        <div class="credentials">
+            <h3>Admin Access</h3>
+            <p><strong>Email:</strong> admin@eliterealty.com</p>
+            <p><strong>Password:</strong> admin123</p>
+            <p><strong>Admin Code:</strong> ELITE2024</p>
+        </div>
+
+        <div class="credentials">
+            <h3>Sample User</h3>
+            <p><strong>Email:</strong> user@example.com</p>
+            <p><strong>Password:</strong> user123</p>
+        </div>
+    </div>
+
+    <div class="demo-card">
+        <h2>📋 Demo Flow</h2>
+        <ol>
+            <li><strong>Start Here</strong>
+                <ul>
+                    <li>Open welcome.html for the entry point</li>
+                    <li>System will guide you to login</li>
+                    <li>No direct access to main site without login</li>
+                </ul>
+            </li>
+            <li><strong>User Registration</strong>
+                <ul>
+                    <li>Go to login page</li>
+                    <li>Click "Register" tab</li>
+                    <li>Create a new account</li>
+                    <li>Login with new credentials</li>
+                    <li>Access main website automatically</li>
+                </ul>
+            </li>
+            <li><strong>Browse Properties</strong>
+                <ul>
+                    <li>View featured properties on homepage (after login)</li>
+                    <li>Properties include admin-added listings</li>
+                    <li>Use search filters</li>
+                    <li>Click "View Details" for more info</li>
+                    <li>Real-time updates when admin adds properties</li>
+                </ul>
+            </li>
+            <li><strong>Admin Functions</strong>
+                <ul>
+                    <li>Login as admin using credentials above</li>
+                    <li>View dashboard statistics</li>
+                    <li>Add new properties (instantly visible on main site)</li>
+                    <li>Edit/delete existing properties</li>
+                    <li>View user management</li>
+                    <li>Check analytics</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="demo-card">
+        <h2>🎯 Key Features to Test</h2>
+        <ul>
+            <li>✅ User registration and login</li>
+            <li>✅ Session management (stays logged in)</li>
+            <li>✅ Admin login with special access code</li>
+            <li>✅ Add new properties through admin panel</li>
+            <li>✅ Edit and delete existing properties</li>
+            <li>✅ View user management</li>
+            <li>✅ Dashboard analytics</li>
+            <li>✅ Search and filter properties</li>
+            <li>✅ Responsive design (try on mobile)</li>
+            <li>✅ Logout functionality</li>
+        </ul>
+    </div>
+
+    <div class="demo-card">
+        <h2>🔧 Testing Admin Features</h2>
+        <p>To test the admin panel:</p>
+        <ol>
+            <li>Login as admin using the credentials above</li>
+            <li>Go to "Add Property" and create a new listing</li>
+            <li>Check "Manage Properties" to see your new property</li>
+            <li>Try editing or deleting properties</li>
+            <li>View the dashboard to see updated statistics</li>
+        </ol>
+    </div>
+
+    <div class="demo-card">
+        <h2>💾 Data Storage</h2>
+        <p>This demo uses localStorage to simulate a database. Your data will persist between browser sessions but will be cleared if you:</p>
+        <ul>
+            <li>Clear browser data</li>
+            <li>Use incognito/private mode</li>
+            <li>Use a different browser</li>
+        </ul>
+        <button onclick="clearData()" class="demo-btn admin-btn">Clear All Data</button>
+    </div>
+
+    <script>
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data? This will reset the demo.')) {
+                localStorage.clear();
+                alert('All data cleared! Refresh the page to reset.');
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+</html> 
